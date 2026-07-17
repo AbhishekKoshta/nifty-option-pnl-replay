@@ -9,8 +9,10 @@ venv/
 .pytest_cache/
 
 # App data — regenerated at runtime, not source
-min_cache/                     # cached 1-minute bars (rebuilt from Upstox)
-upstox_nse.json.gz             # Upstox instrument master (auto-downloaded)
+# (cached 1-minute bars, rebuilt from Upstox)
+min_cache/
+# (Upstox instrument master, auto-downloaded)
+upstox_nse.json.gz
 
 # OS / editor
 .DS_Store
