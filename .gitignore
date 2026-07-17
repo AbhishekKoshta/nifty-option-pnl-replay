@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.ruff_cache/
+.pytest_cache/
+
+# App data — regenerated at runtime, not source
+min_cache/                     # cached 1-minute bars (rebuilt from Upstox)
+upstox_nse.json.gz             # Upstox instrument master (auto-downloaded)
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,12 @@
+# Core app
+streamlit>=1.43
+requests>=2.31
+pandas>=2.0
+numpy>=1.24
+
+# Charting / video / GIF export
+matplotlib>=3.7
+imageio-ffmpeg>=0.5      # bundled ffmpeg (H.264 MP4) — no system ffmpeg needed
+pillow>=10.0            # animated GIF + 🚀 emoji rasterisation
+
+# Tested on: streamlit 1.59, pandas 3.0, numpy 2.4, matplotlib 3.11, pillow 12.2 (Python 3.14)
