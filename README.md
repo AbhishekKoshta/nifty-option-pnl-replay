@@ -10,6 +10,9 @@ A Streamlit app for **NIFTY / BankNifty option traders** that does two things:
 
 **No broker login, no API key** — all data comes from public endpoints.
 
+<!-- After deploying, replace the URL below with your app's, e.g. https://nifty-option-pnl-replay.streamlit.app -->
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=AbhishekKoshta/nifty-option-pnl-replay&branch=main&mainModule=app.py)
+
 ![demo](docs/demo.gif)
 
 ---
@@ -63,18 +66,50 @@ NIFTY 24300 CE @ 72.55 closing at 141.95 → **+₹4,511 (+95.66%)**.
 ## Quick start
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/AbhishekKoshta/nifty-option-pnl-replay.git
+cd nifty-option-pnl-replay
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Then open http://localhost:8501.
+Then open <http://localhost:8501>.
 
 **Command-line** version of the live simulator:
+
 ```bash
 python3 simulate.py --strike 24300 --type CE --entry 72.55 --lots 1
 ```
+
+---
+
+## Deploy your own (Streamlit Community Cloud — free)
+
+This repo is deploy-ready — no Dockerfile, no server. Because the app writes only
+to an ephemeral on-disk cache and pulls all data from public endpoints, it runs
+as-is on the free tier.
+
+1. Fork or push this repo to your GitHub account.
+2. Go to **[share.streamlit.io](https://share.streamlit.io)** and sign in with GitHub.
+3. **New app → From existing repo**, then set:
+   - **Repository:** `your-username/nifty-option-pnl-replay`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+   - *(Advanced settings)* **Python version:** `3.12` or `3.13`.
+4. Click **Deploy**. First build takes a few minutes (it installs
+   `fonts-noto-color-emoji` from `packages.txt` so the 🚀 renders on Linux).
+
+Files that make cloud deployment work:
+
+| File | Purpose |
+|------|---------|
+| `requirements.txt` | Python deps (pandas is pinned to 2.x on the cloud's Python) |
+| `packages.txt` | apt packages — installs the colour-emoji font for the 🚀 |
+| `.streamlit/config.toml` | dark theme + proxy-friendly server settings |
+
+> **Live tab on the cloud:** NSE's public option-chain API often blocks
+> datacenter IPs, so the **Live P&L Simulator** tab may not fetch a live snapshot
+> from Streamlit's servers — use its **manual override** to enter spot/LTP by hand.
+> The **Intraday Replay** tab (Upstox) works fine from the cloud.
 
 ---
 

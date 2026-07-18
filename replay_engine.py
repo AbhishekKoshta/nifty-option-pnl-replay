@@ -6,6 +6,7 @@ P&L convention (house standard): points x qty, qty = lots x lot_size.
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 
 import matplotlib
@@ -77,23 +78,54 @@ _ROCKET_RGBA = None
 _ROCKET_TRIED = False
 
 
+# Colour-emoji fonts to try, in order, across platforms. macOS ships Apple Color
+# Emoji; Streamlit Cloud / Debian / Ubuntu install Noto Color Emoji via
+# `packages.txt` (fonts-noto-color-emoji). Bitmap-strike fonts (Noto) render at
+# their native size, so we normalise the crop to a fixed height afterwards to keep
+# the on-chart scale identical regardless of which font was found.
+_ROCKET_FONTS = (
+    ("/System/Library/Fonts/Apple Color Emoji.ttc", 160),          # macOS
+    ("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", 128),    # Debian/Ubuntu (Streamlit Cloud)
+    ("/usr/share/fonts/noto/NotoColorEmoji.ttf", 128),             # Arch
+    ("/usr/share/fonts/google-noto-emoji/NotoColorEmoji.ttf", 128),  # Fedora
+)
+
+
 def _rocket_rgba():
-    """Rasterize the 🚀 colour emoji once (macOS Apple Color Emoji). None if it
-    can't be produced — callers fall back to a plain marker."""
+    """Rasterize the 🚀 colour emoji once, from whatever colour-emoji font the OS
+    has. Returns None if none is available — callers fall back to a plain marker."""
     global _ROCKET_RGBA, _ROCKET_TRIED
     if _ROCKET_TRIED:
         return _ROCKET_RGBA
     _ROCKET_TRIED = True
     try:
         from PIL import Image, ImageDraw, ImageFont
-        font = ImageFont.truetype("/System/Library/Fonts/Apple Color Emoji.ttc", 160)
-        img = Image.new("RGBA", (180, 180), (0, 0, 0, 0))
-        ImageDraw.Draw(img).text((6, 6), "🚀", font=font, embedded_color=True)
-        bbox = img.getbbox()
-        _ROCKET_RGBA = np.asarray(img.crop(bbox) if bbox else img)
     except Exception:
         _ROCKET_RGBA = None
-    return _ROCKET_RGBA
+        return None
+    for path, size in _ROCKET_FONTS:
+        if not os.path.exists(path):
+            continue
+        try:
+            font = ImageFont.truetype(path, size)
+            img = Image.new("RGBA", (size + 40, size + 40), (0, 0, 0, 0))
+            ImageDraw.Draw(img).text((6, 6), "🚀", font=font, embedded_color=True)
+            bbox = img.getbbox()
+            if not bbox:
+                continue
+            crop = img.crop(bbox)
+            # normalise to a fixed height so `zoom` is font-independent
+            target_h = 150
+            w, h = crop.size
+            if h and h != target_h:
+                crop = crop.resize((max(1, round(w * target_h / h)), target_h),
+                                   Image.LANCZOS)
+            _ROCKET_RGBA = np.asarray(crop)
+            return _ROCKET_RGBA
+        except Exception:
+            continue
+    _ROCKET_RGBA = None
+    return None
 
 
 def compute(df: pd.DataFrame, entry_idx: int, entry_price: float,

@@ -1,12 +1,19 @@
 # Core app
 streamlit>=1.43
 requests>=2.31
-pandas>=2.0
 numpy>=1.24
+
+# pandas: on Python <3.14 (e.g. Streamlit Cloud's 3.12/3.13) pin the battle-tested
+# 2.x line — it has no pyarrow-backed strings, sidestepping the mimalloc thread
+# crash entirely. On 3.14 (local dev) only pandas 3.x ships wheels, and the app's
+# guards (future.infer_string=False + Arrow-free widgets) keep it safe there.
+pandas>=2.0,<3.0; python_version < "3.14"
+pandas>=2.0;      python_version >= "3.14"
 
 # Charting / video / GIF export
 matplotlib>=3.7
 imageio-ffmpeg>=0.5      # bundled ffmpeg (H.264 MP4) — no system ffmpeg needed
 pillow>=10.0            # animated GIF + 🚀 emoji rasterisation
 
-# Tested on: streamlit 1.59, pandas 3.0, numpy 2.4, matplotlib 3.11, pillow 12.2 (Python 3.14)
+# Tested locally on: streamlit 1.59, pandas 3.0, numpy 2.4, matplotlib 3.11,
+# pillow 12.2 (Python 3.14). Streamlit Cloud: Python 3.12/3.13 + pandas 2.x.

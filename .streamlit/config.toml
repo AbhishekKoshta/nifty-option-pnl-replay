@@ -1,0 +1,13 @@
+[theme]
+# Match the TradingView-dark replay charts (see BG in replay_engine.py).
+base = "dark"
+primaryColor = "#ffca28"           # gold — same as the P&L line
+backgroundColor = "#131722"        # chart surface
+secondaryBackgroundColor = "#1c2331"
+textColor = "#e6e6e6"
+
+[server]
+# Streamlit Community Cloud serves behind its own proxy.
+headless = true
+enableCORS = false
+enableXsrfProtection = false
