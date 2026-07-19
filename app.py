@@ -185,8 +185,8 @@ def r_build_gif(instrument_key: str, day: str, entry_idx: int, entry_px: float,
 
 
 # Intraday Replay is the default (first) tab; the Live simulator is second.
-tab_replay, tab_live = st.tabs(["🎬 Intraday Replay (real 1-min)",
-                                "📈 Live P&L Simulator"])
+tab_replay, tab_live = st.tabs(["🎬 Courage Replay (real 1-min)",
+                                "📈 Live - Dare to Hold"])
 
 # =========================================================================== #
 # TAB 1 — LIVE P&L SIMULATOR  (controls live in the sidebar)
