@@ -11,7 +11,7 @@ A Streamlit app for **NIFTY / BankNifty option traders** that does two things:
 **No broker login, no API key** — all data comes from public endpoints.
 
 <!-- After deploying, replace the URL below with your app's, e.g. https://nifty-option-pnl-replay.streamlit.app -->
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=AbhishekKoshta/nifty-option-pnl-replay&branch=main&mainModule=app.py)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://abhishekkoshta-nifty-option-pnl-replay-app-jfgjll.streamlit.app/)
 
 ![demo](docs/demo.gif)
 
